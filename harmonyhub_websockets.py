@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# Blast my LED candles with IR to turn them on
 
 from time import sleep
 import websocket
