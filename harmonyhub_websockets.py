@@ -10,13 +10,14 @@ from websocket import create_connection
 # The code opens a connection locally via websockets to the hub and sends commands and status info
 #
 # In this case, command is PowerOn and status is 'press', 'hold', and 'release'
-# It runs a lopp for the 'hold' status to blast enough IR for the candles to turn on
+# It runs a loop for the 'hold' status to blast enough IR for the candles to turn on
 # (PowerOn was one of the listed commands from my harmony conf file)
 #
-# This was just a quick POC to verify the ability to talk to the hub
-# needs a lot of work. But the reason it came about was due to Home Assistant not
-# able to have the hub blast IR in a similar way 
-# Other items such as the 'id' and timestamp do not seem to matter how they are set
+# This was just a quick POC to verify the ability to talk to the hub.
+# Needs a lot of work. But the reason it came about was due to Home Assistant not
+# able to have the hub blast IR in a similar way .
+#
+# NOTE: Items such as the 'id' and timestamp do not seem to matter how they are set
 
 websocket.enableTrace(True)
 ws = create_connection("ws://192.168.2.3:8088/?domain=svcs.myharmony.com&hubId=18322921")
