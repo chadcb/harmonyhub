@@ -1,23 +1,33 @@
-# Blast my LED candles with IR to turn them on
-
+# Quick hack to turn on LED candles by blasting them with IR
+# I run this from within Home Assistant. I have a second script
+# that does the same, but sends PowerOff commands to turn off the candles.
 from time import sleep
 import websocket
 from websocket import create_connection
 
-# NOTE: 18322921 is an example of what your hubId might look like
-# NOTE: 57216229 is the deviceId found in the harmony conf (HASS) for the device you are controlling
 
-# The code opens a connection locally via websockets to the hub and sends commands and status info
+# NOTE: 18322921 is an example of what your hubId might look like
+# NOTE: 57216229 is the deviceId found in the harmony conf for the device you are controlling
 #
-# In this case, command is PowerOn and status is 'press', 'hold', and 'release'
-# It runs a loop for the 'hold' status to blast enough IR for the candles to turn on
-# (PowerOn was one of the listed commands from my harmony conf file)
+# 192.168.2.3 is an example of your local hub IP
+# Default port is 8088/tcp
 #
-# This was just a quick POC to verify the ability to talk to the hub.
-# Needs a lot of work. But the reason it came about was due to Home Assistant not
-# able to have the hub blast IR in a similar way .
+# The code opens a websockets connection to the hub, and in the example here, sends a PRESS for PowerOn.
+# Next, runs a loop to blast the HOLD status for PowerOn action (ensures the candles turn on)
+# Finally, sends the RELEASE status.
 #
-# NOTE: Items such as the 'id' and timestamp do not seem to matter how they are set
+# This mimics what occurs when you hold down a button within the iOS app and allows the candles
+# to turn on. I was not able to have sucess using the Home Assistant Harmony add on for this.
+# It would not send repeated commands fast enough. Visually, you can see a difference at the rate
+# of IR being blasted by the green light on the hub.
+#
+# Using iOS and Wireshark, you can capture all of the Web socket activity to see everything that is supported.
+# In recent light of Harmony disabling their local api, Websockets may be an alternative way to achieve the
+# same results. Wireshark provides all of the information on how to request activities from the hub along
+# with deviceId's and other useful information. I haven't tested sending activity commands yet, but I expect
+# it should work the same.
+
+# PowerOn was one of the listed commands from my harmony conf file
 
 websocket.enableTrace(True)
 ws = create_connection("ws://192.168.2.3:8088/?domain=svcs.myharmony.com&hubId=18322921")
